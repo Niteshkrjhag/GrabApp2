@@ -258,7 +258,9 @@ fun OnBackClickStateSaver(navController: NavController) {
         if (navController.previousBackStackEntry != null) {
             navController.popBackStack()  // Go back to the previous screen
         } else {
-            navController.navigate(RouteNS.HomeScreen.route)  // If no previous screen, go to home
+            navController.navigate(RouteNS.HomeScreen.route)  { // If no previous screen, go to home
+                popUpTo(RouteNS.HomeScreen.route) { inclusive = true } // Ensure clean navigation
+            }
         }
     }
 }

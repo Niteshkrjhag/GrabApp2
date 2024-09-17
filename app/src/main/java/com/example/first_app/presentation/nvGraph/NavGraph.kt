@@ -30,7 +30,7 @@ fun NavGraph(
              ){
                  val viewModel: OnBoardingViewModel = hiltViewModel()
                  OnBoardingScreen(
-                     OnEvent= viewModel::onEvent
+                     OnEvent= viewModel::onEvent,navController
                  )
              }
          }
@@ -39,24 +39,9 @@ fun NavGraph(
             startDestination = RouteNS.NewsNavigatorScreen.route
         ){
             composable(route = RouteNS.NewsNavigatorScreen.route){
-
                 NewsNavigator()
-
-//                val viewModel :SearchViewModel = hiltViewModel()
-//                val articles = viewModel.news.collectAsLazyPagingItems()
-//                HomeScreen_Ns(articles = articles, navigate ={} )
-
             }
         }
-//        navigation(
-//            route = RouteNS.SettingsScreen.route, // Define this in RouteNS
-//            startDestination = RouteNS.ChatBotScreen.route
-//        ) {
-//            composable(route = RouteNS.ChatBotScreen.route) {
-//                val viewModel:ChatViewModel = hiltViewModel()
-//                ChatBotScreen(viewModel)
-//            }
-//        }
 
     }
 }

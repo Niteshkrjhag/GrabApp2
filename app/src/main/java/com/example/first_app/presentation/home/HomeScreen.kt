@@ -140,7 +140,9 @@ fun HomeScreen_NS(
 //            Spacer(modifier = Modifier.width(173.dp))
             IconButton(onClick = {
                 Log.d("chatbotscreen","clickregistered")
-                navController.navigate(RouteNS.ChatBotScreen.route)
+                navController.navigate(RouteNS.ChatBotScreen.route){
+                    popUpTo(RouteNS.HomeScreen.route) { inclusive = false }
+                }
             },
                 modifier = Modifier.fillMaxHeight()
 //                    .align(Alignment.End)

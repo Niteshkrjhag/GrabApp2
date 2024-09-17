@@ -1,5 +1,8 @@
 package com.example.first_app.presentation.onboarding
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
+import androidx.benchmark.perfetto.ExperimentalPerfettoCaptureApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +17,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import com.example.first_app.presentation.Dimens.PageIndicatorWidth
 import com.example.first_app.presentation.Dimens.mediumPadding2
 import com.example.first_app.presentation.common.NewsButton
@@ -31,12 +39,50 @@ import com.example.first_app.presentation.onboarding.components.OnBoardingPage
 import com.example.first_app.presentation.onboarding.components.PageIndicator
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
-@Preview(showSystemUi = true)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalPerfettoCaptureApi::class)
 @Composable
 fun OnBoardingScreen(
-    OnEvent: (OnBoardingEvent)->Unit ={}
+    OnEvent: (OnBoardingEvent)->Unit ={},navController:NavController
 ){
+    val context = LocalContext.current
+    val activity = context as? Activity
+    val showDialog = remember { mutableStateOf(false) }
+
+    // BackHandler to intercept the back press
+    BackHandler {
+        showDialog.value = true // Show the confirmation dialog
+    }
+
+    // Show the popup dialog when the back button is pressed
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                showDialog.value = false // Dismiss the dialog when clicked outside
+            },
+            title = {
+                Text(text = "Exit App")
+            },
+            text = {
+                Text("Would you like to close the app?")
+            },
+            confirmButton = {
+                Button(onClick = {
+                    activity?.finish() // Close the app if the user confirms
+                }) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDialog.value = false // Dismiss the dialog if the user cancels
+                }) {
+                    Text("No")
+                }
+            }
+        )
+    }
+
+
     Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)){
         Column(
             modifier = Modifier.fillMaxSize()
@@ -103,3 +149,5 @@ fun OnBoardingScreen(
         }
     }
 }
+
+

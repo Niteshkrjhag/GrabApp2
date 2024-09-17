@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.first_app.R
 import com.example.first_app.googleSignIn.model.User
+import com.example.first_app.navigation.Routes
 import com.example.first_app.presentation.nvGraph.RouteNS
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -35,32 +36,25 @@ class GoogleSignInViewModel:ViewModel() {
     // Function to handle Google Sign-In
     fun handleGoogleSignIn(context: Context, navController: NavController) {
         viewModelScope.launch {
-
-            // Collect the result of the Google Sign-In process
             googleSignIn(context).collect { result ->
-                result.fold( // It allows you to specify actions for both success and failure cases of the operation, making it easy to manage the different outcomes.
+                result.fold(
                     onSuccess = { authResult ->
-                        // Handle successful sign-in
                         val currentUser = authResult.user
                         if (currentUser != null) {
-                            user.value = User(currentUser.uid,currentUser.displayName!!,currentUser.photoUrl.toString(),currentUser.email!!,"India","Free")
-                            // Show success message
-                            Toast.makeText(
-                                context,
-                                "Account created successfully!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            // Navigate to the home screen
-                            navController.navigate(RouteNS.OnBoardingScreen.route)
+                            Log.d("GoogleSignInViewModel", "User signed in: ${currentUser.displayName}")
+                            user.value = User(currentUser.uid, currentUser.displayName!!, currentUser.photoUrl.toString(), currentUser.email!!, "India", "Free")
+                            Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
+                            Log.d("GoogleSignInViewModel", "Navigating to OnBoardingScreen")
+                            navController.navigate(Routes.BoardingScreen){
+                                popUpTo(Routes.Login) { inclusive = true } // Clear the back stack up to the login screen
+                                launchSingleTop = true // Prevent multiple instances of the destination
+                            }
+                        } else {
+                            Log.e("GoogleSignInViewModel", "Current user is null")
                         }
                     },
                     onFailure = { e ->
-                        // Handle sign-in error
-                        Toast.makeText(
-                            context,
-                            "Something went wrong: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(context, "Something went wrong: ${e.message}", Toast.LENGTH_SHORT).show()
                         Log.d("Issue", "handleGoogleSignIn: ${e.message}")
                     }
                 )
