@@ -9,6 +9,7 @@ import com.example.first_app.domain.usecase.news.GetNews
 import com.example.first_app.domain.usecase.news.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -18,8 +19,26 @@ class HomeViewModel @Inject constructor(
     var state = mutableStateOf(HomeState())
         private set
 
+    private val sources = listOf(
+        "Bloomberg",
+        "Business Insider",
+        "Crypto Coins News",
+        "Engadget",
+        "Hacker News",
+        "New Scientist",
+        "Financial Post",
+        "Fortune",
+        "InfoMoney",
+        "the-verge",
+        "coin-desk",
+        "hacker-noon",
+        "google-news-in",
+        "cnbc",
+        "crypto-coins-news"
+    ).filter { it.isNotBlank() }
+
     val news = getNewsUseCase(
-        sources = listOf("bbc-news","abc-news","al-jazeera-english")
+        sources = sources.shuffled(Random(System.currentTimeMillis())) // Shuffle sources
     ).cachedIn(viewModelScope)
 
 }

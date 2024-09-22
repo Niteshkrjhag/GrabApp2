@@ -59,6 +59,7 @@ class LoginViewModel:ViewModel() {
             }
     }
     fun signout(){
+//        _authState.value = AuthState.Loading
         Firebase.auth.signOut()
         _authState.value = AuthState.Unauthenticated
     }

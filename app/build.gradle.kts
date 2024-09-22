@@ -74,7 +74,7 @@ android {
         implementation ("androidx.compose.ui:ui")
         implementation ("androidx.compose.ui:ui-graphics")
         implementation ("androidx.compose.ui:ui-tooling-preview")
-        implementation ("androidx.compose.material3:material3:1.3.0-beta05")
+        implementation ("androidx.compose.material3:material3:1.3.0")
 
         // Jetpack Navigation Compose
         implementation ("androidx.navigation:navigation-compose:2.7.7")
@@ -92,7 +92,7 @@ android {
         // Testing dependencies
         testImplementation ("junit:junit:4.13.2")
         androidTestImplementation ("androidx.test.ext:junit:1.2.1")
-        androidTestImplementation ("androidx.test.espresso:espresso-core:3.6.1")
+        androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1") //3.6.1
         androidTestImplementation ("androidx.compose:compose-bom:2024.06.00")
         androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.7.0-beta06")
         debugImplementation ("androidx.compose.ui:ui-tooling")
@@ -119,7 +119,6 @@ android {
         implementation ("androidx.compose.foundation:foundation:1.6.8")
 
         val lifecycle_version = "2.8.4"
-        val arch_version = "2.2.0"
 
         // ViewModel
         implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
@@ -151,10 +150,14 @@ android {
 
 
         //Gemini sdk for android
-        implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
+        implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
         //LottieFiles
         implementation ("com.airbnb.android:lottie-compose:6.5.2")
+
+        implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+
+
     }
 kapt {
     correctErrorTypes = true

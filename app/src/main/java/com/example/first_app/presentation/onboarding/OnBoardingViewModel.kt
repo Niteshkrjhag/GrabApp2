@@ -2,7 +2,6 @@ package com.example.first_app.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.first_app.domain.usecase.app_entry.AppEntryUseCases
 import com.example.first_app.domain.usecase.app_entry.SaveAppEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

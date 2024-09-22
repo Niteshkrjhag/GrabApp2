@@ -1,12 +1,10 @@
 package com.example.first_app.Screen
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,16 +15,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -41,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -61,13 +57,18 @@ import com.example.first_app.R
 import com.example.first_app.googleSignIn.GoogleSignInViewModel
 import com.example.first_app.navigation.Routes
 import com.example.first_app.navigation.Routes.BoardingScreen
+import com.example.first_app.ui.theme.Teal200
+import com.example.first_app.ui.theme.splash_background_color
 
 
 @Composable
-fun Login(navController: NavHostController,authViewModel: LoginViewModel,context: Context,googleSignInViewModel: GoogleSignInViewModel) {
+fun Login(navController: NavHostController,
+          authViewModel: LoginViewModel,
+          googleSignInViewModel: GoogleSignInViewModel) {
 Log.d("SignOut","Inside login screen")
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
+
 
     LaunchedEffect(authState.value) {
         when(authState.value){
@@ -203,25 +204,25 @@ Log.d("SignOut","Inside login screen")
             verticalAlignment = Alignment.CenterVertically
         ) {
             val google_login = painterResource(id = R.drawable.google_login)
-            val facebook_login = painterResource(id = R.drawable.facebook_login)
-            val twitter_login = painterResource(id = R.drawable.twitter_login)
 
 
             ClickableImage(
-                google_login = google_login,
-                onClick = {
-                    googleSignInViewModel.handleGoogleSignIn(context, navController)
-                    Log.d("click", "Google Sign-In Clicked")
-                }
+               google_login = google_login,
+               onClick = {
+                  googleSignInViewModel.handleGoogleSignIn(context, navController)
+                  Log.d("click", "Google Sign-In Clicked")
+               }
             )
-            Spacer(modifier = Modifier.width(20.dp))
-            ClickableImage(google_login = facebook_login,
-                onClick = {}
-                )
-            Spacer(modifier = Modifier.width(20.dp))
-            ClickableImage(google_login = twitter_login,
-                onClick = {}
-            )
+//            Spacer(modifier = Modifier.width(20.dp))
+////            ClickableImage(google_login = facebook_login,
+////                onClick = {}
+////                )
+//            Spacer(modifier = Modifier.width(20.dp))
+////            ClickableImage(google_login = twitter_login,
+////                onClick = {
+////
+////                }
+////            )
         }
         Spacer(modifier = Modifier.height(15.dp))
         val annotatedText = buildAnnotatedString {
@@ -258,22 +259,43 @@ fun ClickableImage(
     onClick: () -> Unit
 ) {
     Box(
-       modifier =  Modifier
-           .size(40.dp)
-           .clip(CircleShape)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .height(45.dp)
+            .clip(CircleShape)
             .clickable(
-                onClick = { onClick() },
+               onClick = { onClick() },
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(color = Color.Gray)
             )
             .wrapContentSize()
     ){
-        Image(
-            painter = google_login,
-            contentDescription = "$google_login",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.size(30.dp)
-        )
+        Row(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Teal200,
+                            splash_background_color
+                        ),
+                    )
+                )
+                .fillMaxSize()
+                .padding(10.dp),
+            // contentAlignment = Alignment.Center
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.google_login),
+                contentDescription = "Google"
+            )
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = "Continue with Google"
+            )
+        }
     }
+
 
 }

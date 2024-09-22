@@ -5,5 +5,4 @@ object Routes {
     var SignUp = "SignUp"
     var BoardingScreen = "BoardingScreen"
 
-
 }

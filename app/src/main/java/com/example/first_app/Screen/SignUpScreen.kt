@@ -5,17 +5,22 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
@@ -23,8 +28,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,8 +41,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
@@ -60,21 +69,28 @@ import androidx.navigation.compose.rememberNavController
 import com.example.first_app.Login_auth.AuthState
 import com.example.first_app.Login_auth.LoginViewModel
 import com.example.first_app.R
+import com.example.first_app.googleSignIn.GoogleSignInViewModel
 import com.example.first_app.navigation.Routes
 import com.example.first_app.navigation.Routes.BoardingScreen
 import com.example.first_app.presentation.nvGraph.RouteNS
 import com.example.first_app.presentation.onboarding.OnBoardingScreen
+import com.example.first_app.ui.theme.Purple200
+import com.example.first_app.ui.theme.PurpleGrey80
+import com.example.first_app.ui.theme.Teal200
+import com.example.first_app.ui.theme.splash_background_color
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun signUpScreen(
     navController: NavHostController,
-    authViewModel: LoginViewModel
+    authViewModel: LoginViewModel,
+    googleSignInViewModel: GoogleSignInViewModel
 ) {
 
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
+
 
     LaunchedEffect(authState.value) {
         when(authState.value){
@@ -137,38 +153,45 @@ fun signUpScreen(
                 horizontalArrangement = Arrangement.Center,
 
             ){
-                  Image(
-                      painter = painterResource(id = R.drawable.facebook_login),
-                      contentDescription = "facbook",
-                      modifier = Modifier
-                          .wrapContentWidth()
-                          .height(45.dp)
-                          .border(width = 1.dp, color = Color.Black, shape = RectangleShape)
-                          .padding(4.dp), // padding inside border content
-                      contentScale = ContentScale.Fit
-                  )
-                Spacer(modifier = Modifier.width(30.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.google_login),
-                    contentDescription = "Google",
+                Box(
                     modifier = Modifier
-                        .wrapContentWidth()
+                        .fillMaxWidth(0.8f)
                         .height(45.dp)
-                        .border(width = 1.dp, color = Color.Black, shape = RectangleShape)
-                        .padding(4.dp),
-                    contentScale = ContentScale.Fit
-                )
-                Spacer(modifier = Modifier.width(30.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.twitter_login),
-                    contentDescription = "Twitter",
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .height(45.dp)
-                        .border(width = 1.dp, color = Color.Black, shape = RectangleShape)
-                        .padding(4.dp),
-                    contentScale = ContentScale.Fit
-                )
+                        .clip(CircleShape)
+                        .clickable(
+                            onClick = { googleSignInViewModel.handleGoogleSignIn(context, navController) },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(color = Color.Gray)
+                        )
+                        .wrapContentSize()
+                ){
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(
+                                        PurpleGrey80,
+                                        Purple200
+
+                                    ),
+                                )
+                            )
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        // contentAlignment = Alignment.Center
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.google_login),
+                            contentDescription = "Google"
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 10.dp),
+                            text = "Continue with Google"
+                        )
+                    }
+                }
 
             }
             Spacer(modifier = Modifier.height(15.dp))

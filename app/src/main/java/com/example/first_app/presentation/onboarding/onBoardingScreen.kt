@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPerfettoCaptureApi::class)
 @Composable
 fun OnBoardingScreen(
-    OnEvent: (OnBoardingEvent)->Unit ={},navController:NavController
+    OnEvent: (OnBoardingEvent)->Unit ,navController:NavController
 ){
     val context = LocalContext.current
     val activity = context as? Activity

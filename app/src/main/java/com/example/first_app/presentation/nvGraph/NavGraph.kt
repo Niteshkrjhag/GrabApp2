@@ -34,6 +34,7 @@ fun NavGraph(
                  )
              }
          }
+
         navigation(
             route = RouteNS.NewsNavigation.route,
             startDestination = RouteNS.NewsNavigatorScreen.route
@@ -42,6 +43,8 @@ fun NavGraph(
                 NewsNavigator()
             }
         }
+
+
 
     }
 }

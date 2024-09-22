@@ -16,6 +16,4 @@ sealed class RouteNS(
     object  SettingsScreen: RouteNS(route = "settingsScreen")
     object  ChatBotScreen: RouteNS(route = "chatBotScreen")
     object  ChatBotNavigation: RouteNS(route = "chatBotNavigation")
-
-
 }
