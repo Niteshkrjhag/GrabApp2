@@ -8,5 +8,4 @@ Project: Grab - Technology, Business, and Crypto News App
 	6.	Implemented GrabBot: A personalized chatbot feature to assist users in reading news articles, ensuring a smooth and engaging user experience.
 
  
-Demo:
 https://github.com/user-attachments/assets/130669d2-6c44-4b60-a797-10f9ba8049bc
